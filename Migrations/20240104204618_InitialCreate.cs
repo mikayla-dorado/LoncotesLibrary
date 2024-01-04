@@ -74,6 +74,12 @@ namespace LoncotesLibrary.Migrations
                         principalTable: "Genres",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Materials_MaterialTypes_MaterialTypeId",
+                        column: x => x.MaterialTypeId,
+                        principalTable: "MaterialTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -121,8 +127,8 @@ namespace LoncotesLibrary.Migrations
                 columns: new[] { "Id", "CheckoutDays", "Name" },
                 values: new object[,]
                 {
-                    { 1, 12, "Movie" },
-                    { 2, 14, "Book" },
+                    { 1, 30, "Movie" },
+                    { 2, 31, "Book" },
                     { 3, 7, "CD" }
                 });
 
@@ -141,7 +147,7 @@ namespace LoncotesLibrary.Migrations
                 columns: new[] { "Id", "GenreId", "MaterialName", "MaterialTypeId", "OutofCirculationSince" },
                 values: new object[,]
                 {
-                    { 1, 1, "The Bodyguard", 1, null },
+                    { 1, 1, "The Bodyguard", 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
                     { 2, 2, "ACOTAR", 2, null },
                     { 3, 3, "New Morning Mercies", 2, null },
                     { 4, 2, "Age of Adeline", 1, null },
@@ -151,6 +157,23 @@ namespace LoncotesLibrary.Migrations
                     { 8, 1, "Can't Buy Me Love", 1, null },
                     { 9, 2, "Robots", 1, null },
                     { 10, 2, "Cars", 1, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Checkouts",
+                columns: new[] { "Id", "CheckoutDate", "MaterialId", "PatronId", "ReturnDate" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2023, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, 2, new DateTime(2023, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2023, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 1, null },
+                    { 3, new DateTime(2023, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 3, null },
+                    { 4, new DateTime(2024, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, 2, new DateTime(2024, 1, 17, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, new DateTime(2023, 8, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 5, 1, new DateTime(2023, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 6, new DateTime(2023, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 6, 3, new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 7, new DateTime(2024, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 7, 3, new DateTime(2024, 2, 16, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 8, new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 8, 2, new DateTime(2023, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 9, new DateTime(2023, 7, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), 9, 1, new DateTime(2023, 7, 17, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 10, new DateTime(2023, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 10, 1, new DateTime(2023, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -167,15 +190,17 @@ namespace LoncotesLibrary.Migrations
                 name: "IX_Materials_GenreId",
                 table: "Materials",
                 column: "GenreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Materials_MaterialTypeId",
+                table: "Materials",
+                column: "MaterialTypeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Checkouts");
-
-            migrationBuilder.DropTable(
-                name: "MaterialTypes");
 
             migrationBuilder.DropTable(
                 name: "Materials");
@@ -185,6 +210,9 @@ namespace LoncotesLibrary.Migrations
 
             migrationBuilder.DropTable(
                 name: "Genres");
+
+            migrationBuilder.DropTable(
+                name: "MaterialTypes");
         }
     }
 }

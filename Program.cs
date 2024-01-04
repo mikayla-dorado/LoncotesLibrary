@@ -238,5 +238,72 @@ app.MapGet("/api/patrons/withcheckouts", (LoncotesLibraryDbContext db) =>
 });
 
 
+//update patrons
+app.MapPut("/api/patrons/{id}", (LoncotesLibraryDbContext db, int id, Patron patron) =>
+{
+    Patron patronUpdate = db.Patrons.SingleOrDefault(p => p.Id == id);
+    if (patronUpdate == null)
+    {
+        return Results.NotFound();
+    }
+    patronUpdate.FirstName = patron.FirstName;
+    patronUpdate.LastName = patron.LastName;
+    patronUpdate.Address = patron.Address;
+    patronUpdate.Email = patron.Email;
+    patronUpdate.IsActive = patron.IsActive;
+
+    db.SaveChanges();
+    return Results.NoContent();
+});
+
+
+//deactivate a patron (soft delete again)
+app.MapPost("/api/patrons/{id}/deactivate", (LoncotesLibraryDbContext db, int id) =>
+{
+    Patron patronDeactivate = db.Patrons.SingleOrDefault(p => p.Id == id);
+    if (patronDeactivate == null)
+    {
+        return Results.NotFound();
+    }
+    patronDeactivate.IsActive = false;
+    db.SaveChanges();
+    return Results.Ok($"{patronDeactivate.FirstName} {patronDeactivate.LastName} has been deactivated");
+});
+
+
+//librarian needs to be able to checkout items for patrons
+//create a new checkout for a material & a patron
+//automatically set the checkout date to DateTime.Today
+app.MapPost("/api/checkouts", (LoncotesLibraryDbContext db, Checkout checkout) =>
+{
+    try
+    {
+        checkout.CheckoutDate = DateTime.Today;
+        db.Checkouts.Add(checkout);
+        db.SaveChanges();
+        return Results.Created($"/api/checkouts/{checkout.Id}", checkout);
+    }
+    catch (DbUpdateException)
+    {
+        return Results.BadRequest("Invalid data submitted");
+    }
+});
+
+
+//return a material
+app.MapPost("/api/checkouts/{id}/return", (LoncotesLibraryDbContext db, int id) =>
+{
+    Checkout checkoutReturn = db.Checkouts.SingleOrDefault(c => c.Id == id);
+    if (checkoutReturn == null)
+    {
+        return Results.NotFound();
+    }
+    checkoutReturn.ReturnDate = DateTime.Today;
+    db.SaveChanges();
+    return Results.Ok("Material has been returned");
+});
+
+
+
 app.Run();
 
