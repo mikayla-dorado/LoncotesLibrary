@@ -43,9 +43,9 @@ public class LoncotesLibraryDbContext : DbContext
 
         modelBuilder.Entity<MaterialType>().HasData(new MaterialType[]
         {
-        new MaterialType {Id = 1, Name = "Movie", CheckoutDays = 12},
-        new MaterialType {Id = 2, Name = "Book", CheckoutDays = 14},
-        new MaterialType {Id = 3, Name = "CD", CheckoutDays = 7}
+        new MaterialType {Id = 1, Name = "Movie", CheckoutDays = 30},
+        new MaterialType {Id = 2, Name = "Book", CheckoutDays = 31},
+        new MaterialType {Id = 3, Name = "CD", CheckoutDays =7}
         });
 
         modelBuilder.Entity<Patron>().HasData(new Patron[]
@@ -55,6 +55,18 @@ public class LoncotesLibraryDbContext : DbContext
         new Patron {Id = 3, FirstName = "Zeke", LastName = "Dorado", Address = "123 Ct Rd", Email = "Z@gmail.com", IsActive = true},
         });
 
-        //need checkouts
+        modelBuilder.Entity<Checkout>().HasData(new Checkout[]
+        {
+            new Checkout {Id = 1, MaterialId = 1, PatronId = 2, CheckoutDate = new DateTime(2023, 11, 11), ReturnDate = new DateTime(2023, 11, 21)},
+            new Checkout {Id = 2, MaterialId = 2, PatronId = 1, CheckoutDate = new DateTime(2023, 12, 11)},
+            new Checkout {Id = 3, MaterialId = 3, PatronId = 3, CheckoutDate = new DateTime(2023, 10, 11)},
+            new Checkout {Id = 4, MaterialId = 4, PatronId = 2, CheckoutDate = new DateTime(2024, 1, 11), ReturnDate = new DateTime(2024, 1, 17)},
+            new Checkout {Id = 5, MaterialId = 5, PatronId = 1, CheckoutDate = new DateTime(2023, 8, 11), ReturnDate = new DateTime(2023, 8, 16)},
+            new Checkout {Id = 6, MaterialId = 6, PatronId = 3, CheckoutDate = new DateTime(2023, 1, 11), ReturnDate = new DateTime(2023, 1, 15)},
+            new Checkout {Id = 7, MaterialId = 7, PatronId = 3, CheckoutDate = new DateTime(2024, 2, 11), ReturnDate = new DateTime(2024, 2, 16)},
+            new Checkout {Id = 8, MaterialId = 8, PatronId = 2, CheckoutDate = new DateTime(2023, 6, 15), ReturnDate = new DateTime(2023, 6, 24)},
+            new Checkout {Id = 9, MaterialId = 9, PatronId = 1, CheckoutDate = new DateTime(2023, 7, 17), ReturnDate = new DateTime(2023, 7, 17)},
+            new Checkout {Id = 10, MaterialId = 10, PatronId = 1, CheckoutDate = new DateTime(2023, 9, 11), ReturnDate = new DateTime(2023, 9, 21)}
+        });
     }
 };

@@ -125,7 +125,7 @@ app.MapGet("/api/materials/{id}", (LoncotesLibraryDbContext db, int id) =>
             Id = foundMaterial.Genre.Id,
             Name = foundMaterial.Genre.Name
         },
-        Checkouts = (List<CheckoutDTO>)foundMaterial.Checkouts.Select(c => new CheckoutDTO
+        Checkouts = foundMaterial.Checkouts.Select(c => new CheckoutDTO
         {
             Id = c.Id,
             MaterialId = c.MaterialId,
@@ -159,7 +159,83 @@ app.MapPost("/api/materials", (LoncotesLibraryDbContext db, Material newMat) =>
     }
 });
 
+//delete a material from circulation
+//a soft delete
+app.MapPost("/api/materials/{id}/remove", (LoncotesLibraryDbContext db, int id) =>
+{
+    Material materialRemove = db.Materials.SingleOrDefault(m => m.Id == id);
+    if (materialRemove == null)
+    {
+        return Results.NotFound();
+    }
+    materialRemove.OutofCirculationSince = DateTime.Now;
+    db.SaveChanges();
+    return Results.Ok($"{materialRemove.MaterialName} has been removed");
+});
 
+//get material types
+app.MapGet("/api/materialTypes", (LoncotesLibraryDbContext db) =>
+{
+    return db.MaterialTypes
+    .Select(mt => new MaterialTypeDTO
+    {
+        Id = mt.Id,
+        Name = mt.Name,
+        CheckoutDays = mt.CheckoutDays
+    });
+});
+
+//get genres
+app.MapGet("/api/genres", (LoncotesLibraryDbContext db) =>
+{
+    return db.Genres
+    .Select(g => new GenreDTO
+    {
+        Id = g.Id,
+        Name = g.Name
+    });
+});
+
+
+//get patrons
+app.MapGet("/api/patrons", (LoncotesLibraryDbContext db) =>
+{
+    return db.Patrons
+    .Select(p => new PatronDTO
+    {
+        Id = p.Id,
+        FirstName = p.FirstName,
+        LastName = p.LastName,
+        Address = p.Address,
+        Email = p.Email,
+        IsActive = p.IsActive
+    });
+});
+
+
+//get patrons with checkouts, include materials and their material types
+app.MapGet("/api/patrons/withcheckouts", (LoncotesLibraryDbContext db) =>
+{
+    return db.Patrons
+    .Where(p => p.Checkouts.Any())
+    .Select(p => new PatronDTO
+    {
+        Id = p.Id,
+        FirstName = p.FirstName,
+        LastName = p.LastName,
+        Address = p.Address,
+        Email = p.Email,
+        IsActive = p.IsActive,
+        Checkouts = p.Checkouts.Select(c => new CheckoutDTO
+        {
+            Id = c.Id,
+            MaterialId = c.MaterialId,
+            PatronId = c.PatronId,
+            CheckoutDate = c.CheckoutDate,
+            ReturnDate = c.ReturnDate
+        }).ToList()
+    });
+});
 
 
 app.Run();
