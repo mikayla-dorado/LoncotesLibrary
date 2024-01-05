@@ -39,7 +39,7 @@ app.UseHttpsRedirection();
 app.MapGet("/api/materials", (LoncotesLibraryDbContext db) =>
 {
     return db.Materials
-    .Where(m => m.OutofCirculationSince == null)
+    .Where(m => m.OutOfCirculationSince == null)
     .Include(m => m.Genre)
     .Include(m => m.MaterialType)
     .Select(m => new MaterialDTO
@@ -48,7 +48,7 @@ app.MapGet("/api/materials", (LoncotesLibraryDbContext db) =>
         MaterialName = m.MaterialName,
         MaterialTypeId = m.MaterialTypeId,
         GenreId = m.GenreId,
-        OutofCirculationSince = m.OutofCirculationSince,
+        OutOfCirculationSince = m.OutOfCirculationSince,
         MaterialType = new MaterialTypeDTO
         {
             Id = m.MaterialType.Id,
@@ -77,7 +77,7 @@ app.MapGet("/api/materials/bygenrematerialtype", (LoncotesLibraryDbContext db, i
         MaterialName = m.MaterialName,
         MaterialTypeId = m.MaterialTypeId,
         GenreId = m.GenreId,
-        OutofCirculationSince = m.OutofCirculationSince,
+        OutOfCirculationSince = m.OutOfCirculationSince,
         MaterialType = new MaterialTypeDTO
         {
             Id = m.MaterialType.Id,
@@ -113,7 +113,7 @@ app.MapGet("/api/materials/{id}", (LoncotesLibraryDbContext db, int id) =>
         MaterialName = foundMaterial.MaterialName,
         MaterialTypeId = foundMaterial.MaterialTypeId,
         GenreId = foundMaterial.GenreId,
-        OutofCirculationSince = foundMaterial.OutofCirculationSince,
+        OutOfCirculationSince = foundMaterial.OutOfCirculationSince,
         MaterialType = new MaterialTypeDTO
         {
             Id = foundMaterial.MaterialType.Id,
@@ -168,7 +168,7 @@ app.MapPost("/api/materials/{id}/remove", (LoncotesLibraryDbContext db, int id) 
     {
         return Results.NotFound();
     }
-    materialRemove.OutofCirculationSince = DateTime.Now;
+    materialRemove.OutOfCirculationSince = DateTime.Now;
     db.SaveChanges();
     return Results.Ok($"{materialRemove.MaterialName} has been removed");
 });
@@ -304,6 +304,79 @@ app.MapPost("/api/checkouts/{id}/return", (LoncotesLibraryDbContext db, int id) 
 });
 
 
+//get all materials with their genre & material type that are currently available(not checkout)
+app.MapGet("/api/materials/available", (LoncotesLibraryDbContext db) =>
+{
+    return db.Materials
+    .Where(m => m.OutOfCirculationSince == null)
+    .Where(m => m.Checkouts.All(co => co.ReturnDate != null))
+    .Select(Material => new MaterialDTO
+    {
+        Id = Material.Id,
+        MaterialName = Material.MaterialName,
+        MaterialTypeId = Material.MaterialTypeId,
+        GenreId = Material.GenreId,
+        OutOfCirculationSince = Material.OutOfCirculationSince,
+        MaterialType = new MaterialTypeDTO
+        {
+            Id = Material.MaterialType.Id,
+            Name = Material.MaterialType.Name,
+            CheckoutDays = Material.MaterialType.CheckoutDays
+        },
+        Genre = new GenreDTO
+        {
+            Id = Material.Genre.Id,
+            Name = Material.Genre.Name
+        }
+    }).ToList();
+});
+
+
+//calculating late fees
+app.MapGet("/api/checkouts/overdue", (LoncotesLibraryDbContext db) =>
+{
+    return db.Checkouts
+    .Include(p => p.Patron)
+    .Include(co => co.Material)
+    .ThenInclude(m => m.MaterialType)
+    .Where(co =>
+        (DateTime.Today - co.CheckoutDate).Days > co.Material.MaterialType.CheckoutDays
+        &&
+        co.ReturnDate == null)
+        .Select(co => new CheckoutWithLateFeeDTO
+        {
+            Id = co.Id,
+            MaterialId = co.MaterialId,
+            Material = new MaterialDTO
+            {
+                Id = co.Material.Id,
+                MaterialName = co.Material.MaterialName,
+                MaterialTypeId = co.Material.MaterialTypeId,
+                MaterialType = new MaterialTypeDTO
+                {
+                    Id = co.Material.MaterialTypeId,
+                    Name = co.Material.MaterialType.Name,
+                    CheckoutDays = co.Material.MaterialType.CheckoutDays
+                },
+                GenreId = co.Material.GenreId,
+                OutOfCirculationSince = co.Material.OutOfCirculationSince
+            },
+            PatronId = co.PatronId,
+            Patron = new PatronDTO
+            {
+                Id = co.Patron.Id,
+                FirstName = co.Patron.FirstName,
+                LastName = co.Patron.LastName,
+                Address = co.Patron.Address,
+                Email = co.Patron.Email,
+                IsActive = co.Patron.IsActive
+            },
+            CheckoutDate = co.CheckoutDate,
+            ReturnDate = co.ReturnDate
+        })
+        .ToList();
+});
+
+
 
 app.Run();
-

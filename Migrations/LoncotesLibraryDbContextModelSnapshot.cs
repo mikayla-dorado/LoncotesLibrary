@@ -192,7 +192,7 @@ namespace LoncotesLibrary.Migrations
                     b.Property<int>("MaterialTypeId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("OutofCirculationSince")
+                    b.Property<DateTime?>("OutOfCirculationSince")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
@@ -210,7 +210,7 @@ namespace LoncotesLibrary.Migrations
                             GenreId = 1,
                             MaterialName = "The Bodyguard",
                             MaterialTypeId = 1,
-                            OutofCirculationSince = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            OutOfCirculationSince = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {

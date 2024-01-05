@@ -14,4 +14,5 @@ public class Checkout
   public DateTime? ReturnDate { get; set; }
    public Material Material { get; set; }
   public Patron Patron { get; set; }
+  public bool Paid { get; set; }
 }

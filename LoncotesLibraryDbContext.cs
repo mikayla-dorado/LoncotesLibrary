@@ -29,16 +29,16 @@ public class LoncotesLibraryDbContext : DbContext
 
         modelBuilder.Entity<Material>().HasData(new Material[]
         {
-        new Material {Id = 1, MaterialName = "The Bodyguard", MaterialTypeId = 1, GenreId = 1, OutofCirculationSince = new DateTime(2024, 01, 01)},
-        new Material {Id = 2, MaterialName = "ACOTAR", MaterialTypeId = 2, GenreId = 2, OutofCirculationSince = null},
-        new Material {Id = 3, MaterialName = "New Morning Mercies", MaterialTypeId = 2, GenreId = 3, OutofCirculationSince = null},
-        new Material {Id = 4, MaterialName = "Age of Adeline", MaterialTypeId = 1, GenreId = 2, OutofCirculationSince = null},
-        new Material {Id = 5, MaterialName = "Animal Planet", MaterialTypeId = 2, GenreId = 5, OutofCirculationSince = null},
-        new Material {Id = 6, MaterialName = "Cloverfields", MaterialTypeId = 1, GenreId = 4, OutofCirculationSince = null},
-        new Material {Id = 7, MaterialName = "Reedeming Love", MaterialTypeId = 2, GenreId = 3, OutofCirculationSince = null},
-        new Material {Id = 8, MaterialName = "Can't Buy Me Love", MaterialTypeId = 1, GenreId = 1, OutofCirculationSince = null},
-        new Material {Id = 9, MaterialName = "Robots", MaterialTypeId = 1, GenreId = 2, OutofCirculationSince = null},
-        new Material {Id = 10, MaterialName = "Cars", MaterialTypeId = 1, GenreId = 2, OutofCirculationSince = null}
+        new Material {Id = 1, MaterialName = "The Bodyguard", MaterialTypeId = 1, GenreId = 1, OutOfCirculationSince = new DateTime(2024, 01, 01)},
+        new Material {Id = 2, MaterialName = "ACOTAR", MaterialTypeId = 2, GenreId = 2, OutOfCirculationSince = null},
+        new Material {Id = 3, MaterialName = "New Morning Mercies", MaterialTypeId = 2, GenreId = 3, OutOfCirculationSince = null},
+        new Material {Id = 4, MaterialName = "Age of Adeline", MaterialTypeId = 1, GenreId = 2, OutOfCirculationSince = null},
+        new Material {Id = 5, MaterialName = "Animal Planet", MaterialTypeId = 2, GenreId = 5, OutOfCirculationSince = null},
+        new Material {Id = 6, MaterialName = "Cloverfields", MaterialTypeId = 1, GenreId = 4, OutOfCirculationSince = null},
+        new Material {Id = 7, MaterialName = "Reedeming Love", MaterialTypeId = 2, GenreId = 3, OutOfCirculationSince = null},
+        new Material {Id = 8, MaterialName = "Can't Buy Me Love", MaterialTypeId = 1, GenreId = 1, OutOfCirculationSince = null},
+        new Material {Id = 9, MaterialName = "Robots", MaterialTypeId = 1, GenreId = 2, OutOfCirculationSince = null},
+        new Material {Id = 10, MaterialName = "Cars", MaterialTypeId = 1, GenreId = 2, OutOfCirculationSince = null}
         });
 
         modelBuilder.Entity<MaterialType>().HasData(new MaterialType[]

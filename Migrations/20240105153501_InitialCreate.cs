@@ -63,7 +63,7 @@ namespace LoncotesLibrary.Migrations
                     MaterialName = table.Column<string>(type: "text", nullable: false),
                     MaterialTypeId = table.Column<int>(type: "integer", nullable: false),
                     GenreId = table.Column<int>(type: "integer", nullable: false),
-                    OutofCirculationSince = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    OutOfCirculationSince = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -144,7 +144,7 @@ namespace LoncotesLibrary.Migrations
 
             migrationBuilder.InsertData(
                 table: "Materials",
-                columns: new[] { "Id", "GenreId", "MaterialName", "MaterialTypeId", "OutofCirculationSince" },
+                columns: new[] { "Id", "GenreId", "MaterialName", "MaterialTypeId", "OutOfCirculationSince" },
                 values: new object[,]
                 {
                     { 1, 1, "The Bodyguard", 1, new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified) },
