@@ -35,6 +35,9 @@ namespace LoncotesLibrary.Migrations
                     b.Property<int>("MaterialId")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("Paid")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("PatronId")
                         .HasColumnType("integer");
 
@@ -55,6 +58,7 @@ namespace LoncotesLibrary.Migrations
                             Id = 1,
                             CheckoutDate = new DateTime(2023, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MaterialId = 1,
+                            Paid = false,
                             PatronId = 2,
                             ReturnDate = new DateTime(2023, 11, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -63,6 +67,7 @@ namespace LoncotesLibrary.Migrations
                             Id = 2,
                             CheckoutDate = new DateTime(2023, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MaterialId = 2,
+                            Paid = false,
                             PatronId = 1
                         },
                         new
@@ -70,6 +75,7 @@ namespace LoncotesLibrary.Migrations
                             Id = 3,
                             CheckoutDate = new DateTime(2023, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MaterialId = 3,
+                            Paid = false,
                             PatronId = 3
                         },
                         new
@@ -77,6 +83,7 @@ namespace LoncotesLibrary.Migrations
                             Id = 4,
                             CheckoutDate = new DateTime(2024, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MaterialId = 4,
+                            Paid = false,
                             PatronId = 2,
                             ReturnDate = new DateTime(2024, 1, 17, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -85,6 +92,7 @@ namespace LoncotesLibrary.Migrations
                             Id = 5,
                             CheckoutDate = new DateTime(2023, 8, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MaterialId = 5,
+                            Paid = false,
                             PatronId = 1,
                             ReturnDate = new DateTime(2023, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -93,6 +101,7 @@ namespace LoncotesLibrary.Migrations
                             Id = 6,
                             CheckoutDate = new DateTime(2023, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MaterialId = 6,
+                            Paid = false,
                             PatronId = 3,
                             ReturnDate = new DateTime(2023, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -101,6 +110,7 @@ namespace LoncotesLibrary.Migrations
                             Id = 7,
                             CheckoutDate = new DateTime(2024, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MaterialId = 7,
+                            Paid = false,
                             PatronId = 3,
                             ReturnDate = new DateTime(2024, 2, 16, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -109,6 +119,7 @@ namespace LoncotesLibrary.Migrations
                             Id = 8,
                             CheckoutDate = new DateTime(2023, 6, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MaterialId = 8,
+                            Paid = false,
                             PatronId = 2,
                             ReturnDate = new DateTime(2023, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -117,6 +128,7 @@ namespace LoncotesLibrary.Migrations
                             Id = 9,
                             CheckoutDate = new DateTime(2023, 7, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MaterialId = 9,
+                            Paid = false,
                             PatronId = 1,
                             ReturnDate = new DateTime(2023, 7, 17, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -125,6 +137,7 @@ namespace LoncotesLibrary.Migrations
                             Id = 10,
                             CheckoutDate = new DateTime(2023, 9, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             MaterialId = 10,
+                            Paid = false,
                             PatronId = 1,
                             ReturnDate = new DateTime(2023, 9, 21, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });

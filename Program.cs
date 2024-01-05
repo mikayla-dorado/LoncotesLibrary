@@ -213,6 +213,67 @@ app.MapGet("/api/patrons", (LoncotesLibraryDbContext db) =>
 });
 
 
+//get patrons details by id
+app.MapGet("/api/patrons/{id}", (LoncotesLibraryDbContext db, int id) =>
+{
+     Patron foundPatron = db.Patrons
+        .Include(p => p.Checkouts)
+        .FirstOrDefault(p => p.Id == id);
+
+    if (foundPatron == null)
+    {
+        return Results.NotFound();
+    }
+
+    return Results.Ok(new PatronDTO
+    {
+        Id = foundPatron.Id,
+        FirstName = foundPatron.FirstName,
+        LastName = foundPatron.LastName,
+        Address = foundPatron.Address,
+        Email = foundPatron.Email,
+        IsActive = foundPatron.IsActive,
+
+        Checkouts = db.Checkouts
+            .Where(pc => pc.PatronId == foundPatron.Id)
+            .Select(c => new CheckoutDTO
+            {
+                Id = c.Id,
+                MaterialId = c.MaterialId,
+                PatronId = c.PatronId,
+                CheckoutDate = c.CheckoutDate,
+                ReturnDate = c.ReturnDate
+            })
+            .ToList(),
+        CheckoutsWithLateFee = db.Checkouts
+            .Where(pc => pc.PatronId == foundPatron.Id)
+            .Select(c => new CheckoutWithLateFeeDTO
+            {
+                Id = c.Id,
+                MaterialId = c.MaterialId,
+                PatronId = c.PatronId,
+                CheckoutDate = c.CheckoutDate,
+                ReturnDate = c.ReturnDate,
+                Material = new MaterialDTO
+                {
+                    Id = c.Material.Id,
+                    MaterialName = c.Material.MaterialName,
+                    MaterialTypeId = c.Material.MaterialTypeId,
+                    GenreId = c.Material.GenreId,
+                    OutOfCirculationSince = c.Material.OutOfCirculationSince,
+                    MaterialType = new MaterialTypeDTO
+                    {
+                        Id = c.Material.MaterialType.Id,
+                        Name = c.Material.MaterialType.Name,
+                        CheckoutDays = c.Material.MaterialType.CheckoutDays
+                    }
+                }
+            })
+            .ToList()
+    });
+});
+
+
 //get patrons with checkouts, include materials and their material types
 app.MapGet("/api/patrons/withcheckouts", (LoncotesLibraryDbContext db) =>
 {

@@ -16,6 +16,7 @@ public class Patron
     [Required]
     public bool IsActive { get; set; }
     public List<Checkout> Checkouts { get; set; }
+    //public bool Paid { get; set; }
     public decimal? Balance
   {
     get

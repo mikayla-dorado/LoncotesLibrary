@@ -1,20 +1,26 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { getPatronsById } from "../../data/patronsData"
-import { Table } from "reactstrap";
+import { Table, Button } from "reactstrap";
 
 
 export const PatronDetails = () => {
     const { id } = useParams();
-    const [patron, setPatron] = useState(null)
+    const navigate = useNavigate();
+    const [patron, setPatron] = useState({})
 
     useEffect(() => {
         getPatronsById(id).then(obj => setPatron(obj))
-    }, [id])
+    }, [])
+
+    const handleBtnClick = (event) => {
+        event.preventDefault();
+        navigate("edit")
+      }
 
     return (
         <div className="patron-details-container">
-            <h2>{patron.firstName} {patron.lastName}</h2>
+            <h2>{patron?.firstName} {patron?.lastName}</h2>
             <Table>
                 <thead>
                     <tr>
@@ -28,16 +34,18 @@ export const PatronDetails = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <th scope="row">{patron.id}</th>
-                    <th>{patron.firstName}</th>
-                    <th>{patron.lastName}</th>
-                    <th>{patron.address}</th>
-                    <th>{patron.email}</th>
-                    <th>{patron.isActive ? 'true' : 'false '}</th>
-                    <th>${patron.balance}</th>
+                    <tr>
+                    <th scope="row">{patron?.id}</th>
+                    <th>{patron?.firstName}</th>
+                    <th>{patron?.lastName}</th>
+                    <th>{patron?.address}</th>
+                    <th>{patron?.email}</th>
+                    <th>{patron?.isActive ? 'true' : 'false '}</th>
+                    <th>${patron?.balance}</th>
+                    </tr>
                 </tbody>
             </Table>
-
+            <Button onClick={e => handleBtnClick(e)}>Edit Patron Details</Button>
         </div>
     )
 }
