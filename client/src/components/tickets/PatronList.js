@@ -36,7 +36,6 @@ export const PatronList = () => {
                     <th>Last Name</th>
                     <th>Address</th>
                     <th>Email</th>
-                    {/* <th>Active</th> */}
                 </tr>
                 </thead>
                 <tbody>
@@ -47,7 +46,6 @@ export const PatronList = () => {
                             <td>{p?.lastName}</td>
                             <td>{p?.address}</td>
                             <td>{p?.email}</td>
-                            {/* <td>{p?.isActive ? 'true' : 'false'}</td> */}
                             <td>
                                 <Link to={`${p.id}`}>Details</Link>
                             </td>
@@ -55,7 +53,7 @@ export const PatronList = () => {
                                 {p?.isActive ?
                                 <button onClick={event => handleDeactivateBtn(event, p.id)}>Deactivate Patron</button>
                             :
-                            <button onClick={event =>handleActivateBtn(event, p.id)}>Activate Patron</button>}
+                            <button onClick={event => handleActivateBtn(event, p.id)}>Activate Patron</button>}
                             </td>
                         </tr>
                     ))}

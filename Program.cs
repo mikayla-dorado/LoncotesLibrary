@@ -145,6 +145,7 @@ app.MapGet("/api/materials/{id}", (LoncotesLibraryDbContext db, int id) =>
     });
 });
 
+//add a material
 app.MapPost("/api/materials", (LoncotesLibraryDbContext db, Material newMat) =>
 {
     try
@@ -156,6 +157,21 @@ app.MapPost("/api/materials", (LoncotesLibraryDbContext db, Material newMat) =>
     catch (DbUpdateException)
     {
         return Results.BadRequest("Invalid data submitted");
+    }
+});
+
+//delete a material
+app.MapDelete("/api/materials/{id}", (LoncotesLibraryDbContext db, int id) =>
+{
+    Material chosenMaterial = db.Materials.SingleOrDefault(cm => cm.Id == id);
+    {
+        if (chosenMaterial == null)
+        {
+            return Results.NotFound();
+        }
+        db.Materials.Remove(chosenMaterial);
+        db.SaveChanges();
+        return Results.NoContent();
     }
 });
 
@@ -328,7 +344,19 @@ app.MapPost("/api/patrons/{id}/deactivate", (LoncotesLibraryDbContext db, int id
     }
     patronDeactivate.IsActive = false;
     db.SaveChanges();
-    return Results.Ok($"{patronDeactivate.FirstName} {patronDeactivate.LastName} has been deactivated");
+    return Results.NoContent();
+});
+
+app.MapPost("/api/patrons/{id}/activate", (LoncotesLibraryDbContext db, int id) =>
+{
+    Patron patronActivate = db.Patrons.SingleOrDefault(p => p.Id == id);
+    if (patronActivate == null)
+    {
+        return Results.NotFound();
+    }
+    patronActivate.IsActive = true;
+    db.SaveChanges();
+    return Results.NoContent();
 });
 
 
@@ -438,6 +466,35 @@ app.MapGet("/api/checkouts/overdue", (LoncotesLibraryDbContext db) =>
         .ToList();
 });
 
-
+app.MapGet("/api/checkouts", (LoncotesLibraryDbContext db) =>
+{
+    return db.Checkouts
+    //.Where(c => c.ReturnDate == null)
+    .Select(c => new CheckoutDTO
+    {
+        Id = c.Id,
+        MaterialId = c.MaterialId,
+        PatronId = c.PatronId,
+        CheckoutDate = c.CheckoutDate,
+        ReturnDate = c.ReturnDate,
+        Material = new MaterialDTO
+        {
+            Id = c.Material.Id,
+            MaterialName = c.Material.MaterialName,
+            MaterialTypeId = c.Material.MaterialTypeId,
+            GenreId = c.Material.GenreId,
+            OutOfCirculationSince = c.Material.OutOfCirculationSince
+        },
+        Patron = new PatronDTO
+        {
+            Id = c.Patron.Id,
+            FirstName = c.Patron.FirstName,
+            LastName = c.Patron.LastName,
+            Address = c.Patron.Address,
+            Email = c.Patron.Email,
+            IsActive = c.Patron.IsActive
+        }
+    });
+});
 
 app.Run();

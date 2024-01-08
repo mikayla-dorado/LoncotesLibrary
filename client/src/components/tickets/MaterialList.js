@@ -1,14 +1,23 @@
 import { useEffect, useState } from "react";
 import { Table } from "reactstrap";
-import { getMaterials } from "../../data/materialsData";
+import { getMaterials, deleteMaterial } from "../../data/materialsData";
 import { Link } from "react-router-dom";
 
 export default function MaterialList() {
   const [materials, setMaterials] = useState([]);
 
   useEffect(() => {
-    getMaterials().then(setMaterials);
+    getMaterials().then(setMaterials)
   }, []);
+
+  const getAndSetMaterials = () => {
+    getMaterials().then(setMaterials)
+  }
+
+  const handleDeleteBtn = (event, id) => {
+    event.preventDefault()
+    deleteMaterial(id).then(() => getAndSetMaterials())
+  }
 
   return (
     <div className="container">
@@ -36,6 +45,7 @@ export default function MaterialList() {
               <td>
                 <Link to={`${m.id}`}>Details</Link>
               </td>
+              <td><button onClick={event => handleDeleteBtn(event, m.id)}>Delete Material</button></td>
             </tr>
           ))}
         </tbody>
