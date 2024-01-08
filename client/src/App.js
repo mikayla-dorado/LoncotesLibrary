@@ -13,6 +13,7 @@ function App() {
             <NavLink href="/patrons">Patrons</NavLink>
             <NavLink href="/checkouts">Checkouts</NavLink>
             <NavLink href="/materials/browse">Browse</NavLink>
+            <NavLink href="/checkouts/overdue">Overdue Checkouts</NavLink>
           </NavItem>
         </Nav>
       </Navbar>

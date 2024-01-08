@@ -60,7 +60,7 @@ public class LoncotesLibraryDbContext : DbContext
             new Checkout {Id = 1, MaterialId = 1, PatronId = 2, CheckoutDate = new DateTime(2023, 11, 11), ReturnDate = null},
             new Checkout {Id = 2, MaterialId = 2, PatronId = 1, CheckoutDate = new DateTime(2023, 12, 11), ReturnDate = null},
             new Checkout {Id = 3, MaterialId = 3, PatronId = 3, CheckoutDate = new DateTime(2023, 10, 11), ReturnDate = null},
-            new Checkout {Id = 4, MaterialId = 4, PatronId = 2, CheckoutDate = new DateTime(2024, 1, 11), ReturnDate = new DateTime(2024, 1, 17)},
+            new Checkout {Id = 4, MaterialId = 4, PatronId = 2, CheckoutDate = new DateTime(2024, 1, 11), ReturnDate = new DateTime(2024, 2, 17)},
             new Checkout {Id = 5, MaterialId = 5, PatronId = 1, CheckoutDate = new DateTime(2023, 8, 11), ReturnDate = new DateTime(2023, 8, 16)},
             new Checkout {Id = 6, MaterialId = 6, PatronId = 3, CheckoutDate = new DateTime(2023, 1, 11), ReturnDate = new DateTime(2023, 1, 15)},
             new Checkout {Id = 7, MaterialId = 7, PatronId = 3, CheckoutDate = new DateTime(2024, 2, 11), ReturnDate = new DateTime(2024, 2, 16)},
